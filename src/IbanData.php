@@ -5,9 +5,13 @@ namespace Diverently\IbanInfo;
 class IbanData
 {
     public string $bic;
+
     public string $bankName;
+
     public string $bankCity;
+
     public string $bankCountryName;
+
     public string $bankCountryCode;
 
     public function __construct(string $countryCode, string $blz)
