@@ -13,7 +13,6 @@ class IbanInfoServiceProvider extends PackageServiceProvider
         $package
             ->name('iban-info')
             ->hasConfigFile()
-            ->hasMigration('create_iban-info_table')
             ->hasCommand(IbanInfoCommand::class);
     }
 }

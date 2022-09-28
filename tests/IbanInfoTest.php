@@ -1,9 +1,9 @@
 <?php
 
-it('throws an error if the format is not recognized', function () {
-    // expect(true)->toBeTrue();
-})->skip();
+use Diverently\IbanInfo\IbanInfo;
 
-it('throws an error if the format is not recognized', function () {
-    expect(true)->toBeTrue();
+it('works', function () {
+    $ibanInfo = new IbanInfo('DE89370400440532013000');
+
+    dd($ibanInfo);
 });

@@ -15,13 +15,6 @@ You can install the package via composer:
 composer require diverently/iban-info
 ```
 
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="iban-info-migrations"
-php artisan migrate
-```
-
 You can publish the config file with:
 
 ```bash
