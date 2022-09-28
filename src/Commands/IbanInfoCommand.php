@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace Diverently\IbanInfo\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class IbanInfoCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'iban-info';
 
     public $description = 'My command';
 
