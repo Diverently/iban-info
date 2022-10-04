@@ -4,48 +4,49 @@ namespace Diverently\IbanInfo;
 
 class IbanData
 {
+    const BIC_INDEX = 7;
+
+    const BANK_NAME_INDEX = 2;
+
     public string $bic;
 
     public string $bankName;
 
-    public string $bankCity;
-
-    public string $bankCountryName;
-
-    public string $bankCountryCode;
+    public string $bankCountryCode = '';
 
     public function __construct(string $countryCode, string $blz)
     {
         // TODO: CSV auslesen
+        $this->bankCountryCode = strtolower($countryCode);
         $csv = $this->readCsv();
-        $csv->bic;
-        $csv->bankName;
-        $csv->bankCity;
-        $csv->bankCountryName;
-        $csv->bankCountryCode;
+        $entryString = $this->findBlzInCsv($csv, $blz);
+        $data = explode(',', $entryString);
+        $data = array_map(function ($row){
+            return str_replace('"', '', $row);
+        }, $data);
+        $this->bic = $data[self::BIC_INDEX];
+        $this->bankName = $data[self::BANK_NAME_INDEX];
     }
 
-    private function readCsv()
+    public function readCsv()
     {
-        // $csv = file_get_contents(__DIR__ . '/data/iban.csv');
-        $rows = [
-            [
-                'GENODEF1M05',
-                'Volksbank Mittelhessen eG',
-                'Marburg',
-                'Deutschland',
-                'DE',
-            ],
-        ];
+        $csv = file_get_contents(__DIR__ . "/data/{$this->bankCountryCode}.csv");
+        $csv_array = explode(PHP_EOL, $csv);
 
-        $csv = [
-            'bic' => '123123121',
-            'bankName' => 'Bank Name',
-            'bankCity' => 'Bank City',
-            'bankCountryName' => 'Bank Country Name',
-            'bankCountryCode' => 'Bank Country Code',
-        ];
-
-        return (object) $csv;
+        return $csv_array;
+    }
+    public function findBlzInCsv(array $csv_array, string $blz)
+    {
+        $search_for = "\"{$blz}\"";
+        $results = array_filter($csv_array, function($row) use ($search_for) {
+            return str_starts_with($row, $search_for);
+        });
+        $results = array_filter($results, function($row){
+            $result_array = explode(',', $row);
+            return $result_array[self::BIC_INDEX] !== '""';
+        });
+        $results = array_values($results);
+        // dd($results);
+        return $results[0];
     }
 }

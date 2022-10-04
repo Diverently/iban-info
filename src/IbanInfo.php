@@ -14,10 +14,6 @@ class IbanInfo
 
     public string $bankName;
 
-    public string $bankCity;
-
-    public string $bankCountryName;
-
     public string $bankCountryCode;
 
     public function __construct(string $iban)
@@ -40,8 +36,9 @@ class IbanInfo
         $this->blz = $this->getBlz($iban);
         $this->accountNumber = $this->getAccountNumber($iban);
 
-        // $ibanData = new IbanData($this->bankCountryCode, $this->blz);
-        // $this->bic = $ibanData->bic;
+        $ibanData = new IbanData($this->bankCountryCode, $this->blz);
+        $this->bic = $ibanData->bic;
+        $this->bankName = $ibanData->bankName;
     }
 
     private function getCountryCode(string $iban)
@@ -51,12 +48,12 @@ class IbanInfo
 
     private function getBlz(string $iban)
     {
-        return '200505500';
+        return substr($iban, 4, 8);
     }
 
     private function getAccountNumber(string $iban)
     {
-        return '123456789';
+        return substr($iban, 12);
     }
 
     private function validateIban(string $iban)
@@ -65,6 +62,3 @@ class IbanInfo
     }
 }
 
-// $ibanInfo = new IbanInfo('DE12233xxx');
-
-// $bic = $ibanInfo->bic;
