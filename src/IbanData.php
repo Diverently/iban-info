@@ -21,7 +21,7 @@ class IbanData
         $csv = $this->readCsv();
         $entryString = $this->findBlzInCsv($csv, $blz);
         $data = explode(',', $entryString);
-        $data = array_map(function ($row){
+        $data = array_map(function ($row) {
             return str_replace('"', '', $row);
         }, $data);
         $this->bic = $data[self::BIC_INDEX];
@@ -30,19 +30,21 @@ class IbanData
 
     public function readCsv()
     {
-        $csv = file_get_contents(__DIR__ . "/data/{$this->bankCountryCode}.csv");
+        $csv = file_get_contents(__DIR__."/data/{$this->bankCountryCode}.csv");
         $csv_array = explode(PHP_EOL, $csv);
 
         return $csv_array;
     }
+
     public function findBlzInCsv(array $csv_array, string $blz)
     {
         $search_for = "\"{$blz}\"";
-        $results = array_filter($csv_array, function($row) use ($search_for) {
+        $results = array_filter($csv_array, function ($row) use ($search_for) {
             return str_starts_with($row, $search_for);
         });
-        $results = array_filter($results, function($row){
+        $results = array_filter($results, function ($row) {
             $result_array = explode(',', $row);
+
             return $result_array[self::BIC_INDEX] !== '""';
         });
         $results = array_values($results);

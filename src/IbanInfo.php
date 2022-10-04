@@ -61,4 +61,3 @@ class IbanInfo
         return true;
     }
 }
-
