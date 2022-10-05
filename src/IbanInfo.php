@@ -2,8 +2,34 @@
 
 namespace Diverently\IbanInfo;
 
+
 class IbanInfo
 {
+    const COUNTRY_CODES = array(
+        'DE' => array(
+            'BLZ' => array(
+                'START' => 4,
+                'LENGTH' => 8
+            ),
+            'KTO' => array(
+                'START' => 12,
+                'LENGTH' => 10
+            ),
+            'PATTERN' => "/^[dD][eE]\d{20}$/"
+        ),
+        'CH' => array(
+            'BLZ' => array(
+                'START' => 4,
+                'LENGTH' => 5
+            ),
+            'KTO' => array(
+                'START' => 9,
+                'LENGTH' => 12
+            ),
+            'PATTERN' => "/^[cC][hH]\d{19}$/"
+        )
+    );
+
     public string $iban;
 
     public string $blz;
@@ -18,10 +44,10 @@ class IbanInfo
 
     public function __construct(string $iban)
     {
-        $this->iban = $iban;
-
-        $this->validateIban($iban);
-
+        if ($this->validateIban($iban)) {
+            $this->iban = $iban;
+        }
+        
         $this->setData($iban);
 
         // TODO: BLZ auslesen
@@ -37,28 +63,44 @@ class IbanInfo
         $this->accountNumber = $this->getAccountNumber($iban);
 
         $ibanData = new IbanData($this->bankCountryCode, $this->blz);
-        $this->bic = $ibanData->bic;
+        if ($this->validateBic($ibanData->bic)) {
+            $this->bic = $ibanData->bic;
+        }
         $this->bankName = $ibanData->bankName;
     }
 
-    private function getCountryCode(string $iban)
+    private function getCountryCode(string $iban): string
     {
-        return substr($iban, 0, 2);
+        $countryCode = strtoupper(substr($iban, 0, 2));
+        if (array_key_exists($countryCode, self::COUNTRY_CODES)) {
+            return $countryCode;
+        }
     }
 
     private function getBlz(string $iban)
     {
-        return substr($iban, 4, 8);
+        return substr(
+            $iban,
+            self::COUNTRY_CODES[$this->getCountryCode($iban)]['BLZ']['START'],
+            self::COUNTRY_CODES[$this->getCountryCode($iban)]['BLZ']['LENGTH']);
     }
 
     private function getAccountNumber(string $iban)
     {
-        return substr($iban, 12);
+        return substr(
+            $iban,
+            self::COUNTRY_CODES[$this->getCountryCode($iban)]['KTO']['START'],
+            self::COUNTRY_CODES[$this->getCountryCode($iban)]['KTO']['LENGTH']);
     }
 
-    private function validateIban(string $iban)
+    private function validateIban(string $iban): bool
     {
-        return true;
+        return preg_match(
+            self::COUNTRY_CODES[$this->getCountryCode($iban)]['PATTERN'], $iban);
+    }
+
+    private function validateBic(string $bic): bool
+    {
+        return strlen($bic) === 11;
     }
 }
-
