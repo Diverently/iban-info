@@ -2,11 +2,15 @@
 
 namespace Diverently\IbanInfo;
 
+use Diverently\IbanInfo\Countries\Country;
+
 class IbanData
 {
     const BIC_INDEX = 7;
 
     const BANK_NAME_INDEX = 2;
+
+    public Country $country;
 
     public string $bic;
 
@@ -14,10 +18,9 @@ class IbanData
 
     public string $bankCountryCode = '';
 
-    public function __construct(string $countryCode, string $blz)
+    public function __construct(Country $country, string $blz)
     {
-        // TODO: CSV auslesen
-        $this->bankCountryCode = strtolower($countryCode);
+        $this->country = $country;
         $csv = $this->readCsv();
         $entryString = $this->findBlzInCsv($csv, $blz);
         $data = explode(',', $entryString);
@@ -31,7 +34,8 @@ class IbanData
 
     public function readCsv()
     {
-        $csv = file_get_contents(__DIR__."/data/{$this->bankCountryCode}.csv");
+        $csv_path = __DIR__ . $this->country->csv_path;
+        $csv = file_get_contents($csv_path);
         $csv_array = explode(PHP_EOL, $csv);
 
         return $csv_array;
