@@ -3,6 +3,7 @@
 namespace Diverently\IbanInfo;
 
 use Diverently\IbanInfo\Exceptions\IbanException;
+
 // use Exception;
 
 class IbanInfo
@@ -63,7 +64,7 @@ class IbanInfo
     {
         $countryCode = strtoupper(substr($iban, 0, 2));
 
-        if (! preg_match("/^[a-zA-Z]{2}$/", $countryCode)) {
+        if (! preg_match('/^[a-zA-Z]{2}$/', $countryCode)) {
             throw new IbanException('Invalid country code');
         }
 
