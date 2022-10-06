@@ -74,8 +74,16 @@ class Country
 
     public function getData(string $iban): array
     {
-        $bank_code = substr($iban, $this->bank_code_start, $this->bank_code_length);
-        $account_number = substr($iban, $this->account_number_start, $this->account_number_length);
+        // Only works if all ibans are built in the same way!!
+        preg_match($this->iban_pattern, $iban, $ibanSubgroups);
+        $ibanData = [
+            'country_code' => $ibanSubgroups[1],
+            'bank_code' => $ibanSubgroups[3],
+            'account_number' => $ibanSubgroups[4]
+        ];
+
+        $bank_code = $ibanData['bank_code'];
+        $account_number = $ibanData['account_number'];
 
         $csv = $this->readCsv();
         $entryString = $this->findBankCodeInCsv($csv, $bank_code);
@@ -83,18 +91,16 @@ class Country
         $data = array_map(function ($row) {
             return str_replace('"', '', $row);
         }, $data);
+
         $bic = $data[$this->csv_bic_index];
-        $bankName = $data[$this->csv_bank_name_index];
+        // add exception
+        if ($this->validateBic($bic)) {
+            $ibanData['bic'] = $bic;
+        }
 
-        $this->validateBic($bic);
+        $ibanData['bank_name'] = $data[$this->csv_bank_name_index];
 
-        return [
-            'country_code' => $this->code,
-            'bank_code' => $bank_code,
-            'account_number' => substr($iban, $this->account_number_start, $this->account_number_length),
-            'bic' => $bic,
-            'bank_name' => $bankName,
-        ];
+        return $ibanData;
     }
 
     private function readCsv(): array

@@ -14,7 +14,7 @@ class Switzerland extends Country
 
     public $account_number_length = 12;
 
-    public $iban_pattern = "/^[cC][hH]\d{19}$/";
+    public $iban_pattern = "/^([cC][hH])(\d{2})(\d{5})(\d{12})$/";
 
     public $csv_path = '/data/ch.csv';
 

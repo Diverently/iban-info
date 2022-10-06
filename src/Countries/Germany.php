@@ -14,7 +14,7 @@ class Germany extends Country
 
     public $account_number_length = 10;
 
-    public $iban_pattern = "/^[dD][eE]\d{20}$/";
+    public $iban_pattern = "/^([dD][eE])(\d{2})(\d{8})(\d{10})$/";
 
     public $csv_path = '/data/de.csv';
 

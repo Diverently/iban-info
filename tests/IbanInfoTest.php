@@ -4,7 +4,7 @@ use Diverently\IbanInfo\Exceptions\IbanException;
 use Diverently\IbanInfo\IbanData;
 use Diverently\IbanInfo\IbanInfo;
 
-test('a valid iban works', function () {
+test('a valid german iban works', function () {
     $iban = 'DE13200505502222222222';
     $info = new IbanInfo($iban);
     $this->assertInstanceOf(IbanInfo::class, $info);
@@ -13,6 +13,17 @@ test('a valid iban works', function () {
     $this->assertEquals($info->bic, 'HASPDEHHXXX');
     $this->assertEquals($info->bank, 'Hamburger Sparkasse');
     $this->assertEquals($info->country_code, 'DE');
+});
+
+test('a valid swiss iban works', function () {
+    $iban = 'CH1310000123451234512';
+    $info = new IbanInfo($iban);
+    $this->assertInstanceOf(IbanInfo::class, $info);
+    $this->assertEquals($info->blz, '10000');
+    $this->assertEquals($info->account_number, '123451234512');
+    $this->assertEquals($info->bic, 'BERNBECHXXX');
+    $this->assertEquals($info->bank, 'Schweizer Bank');
+    $this->assertEquals($info->country_code, 'CH');
 });
 
 test('a short iban throws an exception', function () {
