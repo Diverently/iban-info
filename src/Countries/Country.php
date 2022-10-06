@@ -79,7 +79,7 @@ class Country
         $ibanData = [
             'country_code' => $ibanSubgroups[1],
             'bank_code' => $ibanSubgroups[3],
-            'account_number' => $ibanSubgroups[4]
+            'account_number' => $ibanSubgroups[4],
         ];
 
         $bank_code = $ibanData['bank_code'];
