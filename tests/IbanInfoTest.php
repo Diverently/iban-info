@@ -1,7 +1,7 @@
 <?php
 
-use Diverently\IbanInfo\IbanInfo;
 use Diverently\IbanInfo\IbanData;
+use Diverently\IbanInfo\IbanInfo;
 
 it('works', function () {
     // $ibanInfo = new IbanInfo('de23200505501234512345');

@@ -2,33 +2,32 @@
 
 namespace Diverently\IbanInfo;
 
-
 class IbanInfo
 {
-    const COUNTRY_CODES = array(
-        'DE' => array(
-            'BLZ' => array(
+    const COUNTRY_CODES = [
+        'DE' => [
+            'BLZ' => [
                 'START' => 4,
-                'LENGTH' => 8
-            ),
-            'KTO' => array(
+                'LENGTH' => 8,
+            ],
+            'KTO' => [
                 'START' => 12,
-                'LENGTH' => 10
-            ),
-            'PATTERN' => "/^[dD][eE]\d{20}$/"
-        ),
-        'CH' => array(
-            'BLZ' => array(
+                'LENGTH' => 10,
+            ],
+            'PATTERN' => "/^[dD][eE]\d{20}$/",
+        ],
+        'CH' => [
+            'BLZ' => [
                 'START' => 4,
-                'LENGTH' => 5
-            ),
-            'KTO' => array(
+                'LENGTH' => 5,
+            ],
+            'KTO' => [
                 'START' => 9,
-                'LENGTH' => 12
-            ),
-            'PATTERN' => "/^[cC][hH]\d{19}$/"
-        )
-    );
+                'LENGTH' => 12,
+            ],
+            'PATTERN' => "/^[cC][hH]\d{19}$/",
+        ],
+    ];
 
     public string $iban;
 
@@ -47,7 +46,7 @@ class IbanInfo
         if ($this->validateIban($iban)) {
             $this->iban = $iban;
         }
-        
+
         $this->setData($iban);
 
         // TODO: BLZ auslesen
