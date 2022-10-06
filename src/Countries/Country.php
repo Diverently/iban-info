@@ -2,8 +2,6 @@
 
 namespace Diverently\IbanInfo\Countries;
 
-use Diverently\IbanInfo\Countries\Germany;
-use Diverently\IbanInfo\Countries\Switzerland;
 use Diverently\IbanInfo\Exceptions\IbanException;
 
 class Country
@@ -15,13 +13,21 @@ class Country
     ];
 
     public $code;
+
     public $bank_code_start;
+
     public $bank_code_length;
+
     public $account_number_start;
+
     public $account_number_length;
+
     public $iban_pattern;
+
     public $csv_path;
+
     public $csv_bic_index;
+
     public $csv_bank_name_index;
 
     public static function getCountry(string $iban): Country
@@ -51,7 +57,7 @@ class Country
 
     public static function validateCountryCode(string $country_code): bool
     {
-        if (! preg_match("/^[a-zA-Z]{2}$/", $country_code)) {
+        if (! preg_match('/^[a-zA-Z]{2}$/', $country_code)) {
             throw new IbanException("Country code $country_code is invalid");
         }
 
@@ -93,7 +99,7 @@ class Country
 
     private function readCsv(): array
     {
-        $csv = file_get_contents(__DIR__ . '/../' . $this->csv_path);
+        $csv = file_get_contents(__DIR__.'/../'.$this->csv_path);
         $csv_array = explode(PHP_EOL, $csv);
 
         return $csv_array;

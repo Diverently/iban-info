@@ -34,7 +34,7 @@ class IbanData
 
     public function readCsv()
     {
-        $csv_path = __DIR__ . $this->country->csv_path;
+        $csv_path = __DIR__.$this->country->csv_path;
         $csv = file_get_contents($csv_path);
         $csv_array = explode(PHP_EOL, $csv);
 

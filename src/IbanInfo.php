@@ -3,8 +3,6 @@
 namespace Diverently\IbanInfo;
 
 use Diverently\IbanInfo\Countries\Country;
-use Diverently\IbanInfo\Countries\Germany;
-use Diverently\IbanInfo\Exceptions\IbanException;
 
 class IbanInfo
 {
