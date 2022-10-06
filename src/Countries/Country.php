@@ -93,7 +93,6 @@ class Country
         }, $data);
 
         $bic = $data[$this->csv_bic_index];
-        // add exception
         if ($this->validateBic($bic)) {
             $ibanData['bic'] = $bic;
         }
