@@ -24,6 +24,7 @@ class IbanData
         $data = array_map(function ($row) {
             return str_replace('"', '', $row);
         }, $data);
+        $bic = $data[self::BIC_INDEX];
         $this->bic = $data[self::BIC_INDEX];
         $this->bankName = $data[self::BANK_NAME_INDEX];
     }
