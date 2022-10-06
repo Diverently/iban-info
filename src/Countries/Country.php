@@ -2,6 +2,7 @@
 
 namespace Diverently\IbanInfo\Countries;
 
+use Diverently\IbanInfo\Exceptions\BicException;
 use Diverently\IbanInfo\Exceptions\IbanException;
 
 class Country
@@ -10,8 +11,11 @@ class Country
         'DE' => Germany::class,
         'CH' => Switzerland::class,
         'AT' => null,
+        'LU' => null,
+        // TODO Restliche Länder
     ];
 
+    // TODO Umbenennen in country code
     public $code;
 
     public $bank_code_start;
@@ -129,6 +133,7 @@ class Country
 
     public function validateIban(string $iban): bool
     {
+        // TODO iban trimmen
         if (! preg_match($this->iban_pattern, $iban)) {
             throw new IbanException('Invalid IBAN');
         }
@@ -139,15 +144,15 @@ class Country
     public function validateBic(string $bic): bool
     {
         if (strlen($bic) !== 11 && strlen($bic) !== 8) {
-            throw new IbanException('Invalid BIC');
+            throw new BicException('BIC has to be 8 or 11 characters long');
         }
 
         if (! ctype_alnum($bic)) {
-            throw new IbanException('Invalid BIC');
+            throw new BicException('BIC has to be alphanumeric');
         }
 
         if (substr($bic, 4, 2) !== $this->code) {
-            throw new IbanException('Invalid BIC');
+            throw new BicException('BIC has to include country code');
         }
 
         return true;

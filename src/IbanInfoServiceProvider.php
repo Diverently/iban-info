@@ -12,7 +12,6 @@ class IbanInfoServiceProvider extends PackageServiceProvider
     {
         $package
             ->name('iban-info')
-            ->hasConfigFile()
-            ->hasCommand(IbanInfoCommand::class);
+            ->hasConfigFile();
     }
 }
