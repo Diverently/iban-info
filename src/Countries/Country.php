@@ -78,6 +78,7 @@ class Country
         preg_match($this->iban_pattern, $iban, $ibanSubgroups);
         $ibanData = [
             'country_code' => $ibanSubgroups[1],
+            'pruefziffer' => $ibanSubgroups[2],
             'bank_code' => $ibanSubgroups[3],
             'account_number' => $ibanSubgroups[4],
         ];
@@ -137,7 +138,15 @@ class Country
 
     public function validateBic(string $bic): bool
     {
-        if (strlen($bic) !== 11) {
+        if (strlen($bic) !== 11 && strlen($bic) !== 8) {
+            throw new IbanException('Invalid BIC');
+        }
+
+        if (! ctype_alnum($bic)) {
+            throw new IbanException('Invalid BIC');
+        }
+
+        if (substr($bic, 4, 2) !== $this->code) {
             throw new IbanException('Invalid BIC');
         }
 

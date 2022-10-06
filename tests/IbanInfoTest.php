@@ -21,7 +21,7 @@ test('a valid swiss iban works', function () {
     $this->assertInstanceOf(IbanInfo::class, $info);
     $this->assertEquals($info->blz, '10000');
     $this->assertEquals($info->account_number, '123451234512');
-    $this->assertEquals($info->bic, 'BERNBECHXXX');
+    $this->assertEquals($info->bic, 'BERNCHBEXXX');
     $this->assertEquals($info->bank, 'Schweizer Bank');
     $this->assertEquals($info->country_code, 'CH');
 });
