@@ -2,7 +2,6 @@
 
 namespace Diverently\IbanInfo;
 
-use Diverently\IbanInfo\Commands\IbanInfoCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
