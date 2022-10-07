@@ -54,3 +54,13 @@ test('an invalid iban throws an exception', function () {
     $invalid_iban = 'DE320050AAA13154619039';
     $info = IbanInfo::getData($invalid_iban);
 })->throws(IbanException::class, 'Invalid IBAN');
+
+test('helper function', function () {
+    $iban = 'DE13200505502222222222';
+    $info = iban_info($iban);
+    $this->assertEquals($info->bank_code, '20050550');
+    $this->assertEquals($info->account_number, '2222222222');
+    $this->assertEquals($info->bic, 'HASPDEHHXXX');
+    $this->assertEquals($info->bank_name, 'Hamburger Sparkasse');
+    $this->assertEquals($info->country_code, 'DE');
+});
